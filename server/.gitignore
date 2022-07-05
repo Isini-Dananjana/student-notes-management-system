@@ -1,0 +1,20 @@
+# dependencies
+/node_modules
+/.parcel-cache
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+
+# jetbrains configurations
+.idea
+
+# visual studios configurations
+.vscode
+
+.env
+/.env
