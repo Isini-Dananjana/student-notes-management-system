@@ -3,6 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const ListNotes = () => {
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location = "/login";
+  };
   const [allItems, setItem] = useState();
   useEffect(() => {
     const retrieveNotes = async () => {
@@ -18,7 +22,7 @@ const ListNotes = () => {
   }, []);
 
   return (
-    <div style={{ background: "#9A616D" }}> 
+    <div style={{ background: "#9A616D" }}>
       <nav className="navbar navbar-expand-lg navbar-light bg-dark">
         <button
           className="navbar-toggler"
@@ -67,6 +71,20 @@ const ListNotes = () => {
                 href="#"
               >
                 My Notes
+              </a>
+            </li>
+
+            <li className="nav-item">
+              <a
+                className="btn pull-right"
+                style={{
+                  color: "white",
+                  fontWeight: "bold",
+                  float: "right",
+                }}
+                onClick={handleLogout}
+              >
+                Sign Out
               </a>
             </li>
           </ul>
@@ -190,7 +208,7 @@ let deleteItem = (id) => {
     .delete("http://localhost:8070/note/deleteNote/" + id)
     .then((response) => {
       console.log(response.data);
-      alert("deleted successfully")
+      alert("deleted successfully");
     })
     .catch((e) => {
       console.log(e);

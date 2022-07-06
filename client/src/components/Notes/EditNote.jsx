@@ -3,6 +3,10 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 
 let EditNote = (props) => {
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location = "/login";
+  };
   const navigate = useNavigate();
   const { id } = useParams();
   const intialState = {
@@ -16,16 +20,16 @@ let EditNote = (props) => {
       try {
         let result = await axios.get("http://localhost:8070/note/" + id);
         setItem(result.data);
+        console.log(result)
         {
-          
-            setTrue(true);}
-            
+          setTrue(true);
+        }
       } catch (err) {
         console.log(err);
       }
     };
     retriveData();
-  });
+  },[id]);
 
   const handletitle = (e) => {
     let newItem = { ...item };
@@ -38,22 +42,21 @@ let EditNote = (props) => {
     let newItem = { ...item };
 
     newItem.description = e.target.value;
+    console.log(newItem)
     setItem(newItem);
   };
 
-  const updateIetm = () => {
+  const updateItem = () => {
     let data = {
-      "title": item.title,
-
-      "description": item.description,
+      title: item.title,
+      description: item.description,
     };
 
     axios
       .put("http://localhost:8070/note/updateNote/" + id, data)
-      .then(function (response) {
-        console.log(data)
-        alert("Note successfully updated");
-   navigate("/allNotes")
+      .then(function () {
+        alert("Note edited");
+        
       })
       .catch(function (error) {
         console.log(error);
@@ -97,7 +100,7 @@ let EditNote = (props) => {
                   color: "white",
                   fontWeight: "bold",
                 }}
-                href="#"
+                href="/allNotes"
               >
                 Add Notes
               </a>
@@ -109,9 +112,30 @@ let EditNote = (props) => {
                   color: "white",
                   fontWeight: "bold",
                 }}
-                href="#"
+                 href="/allNotes"
               >
                 My Notes
+              </a>
+            </li>
+            <form class="form-inline my-2 my-md-0">
+              <input
+                class="form-control"
+                type="text"
+                placeholder="Search"
+                aria-label="Search"
+              />
+            </form>
+            <li className="nav-item">
+              <a
+                className="btn pull-right"
+                style={{
+                  color: "white",
+                  fontWeight: "bold",
+                  float: "right",
+                }}
+                onClick={handleLogout}
+              >
+                Sign Out
               </a>
             </li>
           </ul>
@@ -131,73 +155,71 @@ let EditNote = (props) => {
                 <div class="card-img-overlay">
                   <h5 class="card-title">Add Your Note</h5>
                   <p class="card-text">
-                  {
-
-gotData ?(
-
-                    <form
-                      style={{ padding: "100px", alignItems: "center" }}
-                      onSubmit={updateIetm}
-                      className="needs-validation"
-                      novalidate
-                    >
-                      <div className="row g-6">
-                        <div className="col-sm-10">
-                          <label
-                            for="firstName"
-                            className="form-label"
-                            style={{ color: "black" }}
-                          >
-                            Title
-                          </label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="title"
-                            required
-                      
-                            Value={item.title}
-                            onChange={handletitle}
+                    {gotData ? (
+                      <form
+                        style={{ padding: "120px", alignItems: "center" }}
+                        onSubmit={updateItem}
+                        className="needs-validation"
+                        novalidate
+                      >
+                        <div className="row g-6">
+                          <div className="col-sm-10">
+                            <label
+                              for="firstName"
+                              className="form-label"
+                              style={{ color: "black" }}
+                            >
+                              Title
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="title"
+                              name="title"
+                              required
+                              value={item.title}
+                              onChange={handletitle}
+                            />
+                            <div className="invalid-feedback">
+                              Valid Product name is required.
+                            </div>
+                          </div>
+                          <hr
+                            className="my-4"
+                            style={{ color: "transparent" }}
                           />
-                          <div className="invalid-feedback">
-                            Valid Product name is required.
+                          <div className="col-10">
+                            <label for="address" className="form-label">
+                              Description
+                            </label>
+                            <textarea
+                              rows="7"
+                              type="text"
+                              className="form-control"
+                              id="description"
+                              name="description"
+                              required
+                              value={item.description}
+                              onChange={handledescription}
+                            />
+                            <div className="invalid-feedback">
+                              Please enter product Description.
+                            </div>
                           </div>
                         </div>
                         <hr className="my-4" style={{ color: "transparent" }} />
-                        <div className="col-10">
-                          <label for="address" className="form-label">
-                            Description
-                          </label>
-                          <textarea
-                            rows="7"
-                            type="text"
-                            className="form-control"
-                            id="description"
-                            value={item.description}
-                            required
-                            onChange={handledescription}
-                            
-                            
-                          />
-                          <div className="invalid-feedback">
-                            Please enter product Description.
-                          </div>
-                        </div>
-                      </div>
-                      <hr className="my-4" style={{ color: "transparent" }} />
 
-                      
-                          <button
-                        style={{ background: "#9A616D", float: "left" }}
-                        className="btn btn-primary"
-                        type="submit"
-                      >
-                        Edit Note
-                      </button>
-                      
-                    
-                    </form>
-                    ):(<p></p>)}
+                        <button
+                          style={{ background: "#9A616D", float: "left" }}
+                          className="btn btn-primary"
+                          type="submit"
+                        >
+                          Edit Note
+                        </button>
+                      </form>
+                    ) : (
+                      <p></p>
+                    )}
                   </p>
                 </div>
               </div>

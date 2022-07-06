@@ -1,0 +1,15 @@
+.error_msg {
+	font-size: 18px;
+	font-weight: 30rem;
+
+	color: #d44141;
+
+}
+
+.success_msg {
+
+	font-size: 18px;
+	font-weight: 30rem;
+
+	color: #060c3aa0;
+}

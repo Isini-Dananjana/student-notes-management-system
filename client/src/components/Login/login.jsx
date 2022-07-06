@@ -13,32 +13,30 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
       const url = "http://localhost:8070/user/signin";
-      axios.post(url, data).then(response=>{
+      axios.post(url, data).then((response) => {
         console.log(response.data);
-        localStorage.setItem('token', response.data.token)
-     
+        localStorage.setItem("token", response.data.token);
 
-      let userStatus = response.data.data.status
-      let accountType = response.data.data.accountType
+        let userStatus = response.data.data.status;
+        let accountType = response.data.data.accountType;
 
-      console.log(userStatus)
+        console.log(userStatus);
 
-      if (userStatus === false){
-        window.location.href = '/profile'
-        // this.props.history.push('/adminHome');
-    
-    }else {
-      if (accountType === "student"){
-        window.location.href = '/allNotes'}
-        else {
-
+        if (userStatus === false) {
+          window.location.href = "/profile";
+          // this.props.history.push('/adminHome');
+        } else {
+          if (accountType === "student") {
+            window.location.href = "/allNotes";
+          }
+          if (accountType === "admin") {
+            window.location.href = "/admin";
+          }
         }
-    }
-
-    })
+      });
     } catch (error) {
       if (
         error.response &&
@@ -113,8 +111,10 @@ const Login = () => {
                         </div>
 
                         <div className="pt-1 mb-4">
-                        {error && <div className={styles.error_msg}>{error}</div>}
-                        <div className="pt-1 mb-2"></div>
+                          {error && (
+                            <div className={styles.error_msg}>{error}</div>
+                          )}
+                          <div className="pt-1 mb-2"></div>
                           <button
                             className="btn btn-dark btn-lg btn-block"
                             type="submit"
