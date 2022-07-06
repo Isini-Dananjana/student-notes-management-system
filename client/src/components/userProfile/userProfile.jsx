@@ -1,41 +1,73 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import styles from "./Userprofile.module.css";
 
-
-// import { Fragment } from "react/cjs/react.production.min";
-
 const UserProfile = () => {
-  const [validUrl, setValidUrl] = useState(false);
-	const [password, setPassword] = useState("");
-	const [msg, setMsg] = useState("");
-	const [error, setError] = useState("");
-	const param = useParams();
+  const [msg, setMsg] = useState("");
+  const [error, setError] = useState("");
+  const param = useParams();
   const { id } = useParams();
-	const url = `http://localhost:8070/user/${param.id}/${param.token}`;
-   
 
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-		try {
-			const { data } = await axios.post(url, { password });
-			setMsg(data.message);
-			setError("");
-			window.location = "/login";
-		} catch (error) {
-			if (
-				error.response &&
-				error.response.status >= 400 &&
-				error.response.status <= 500
-			) {
-				setError(error.response.data.message);
-				setMsg("");
-			}
-		}
-	};
-    
+  const intialState = {
+    dob: " ",
+    mobile: "",
+    password: "",
+  };
+  const [item, setItem] = useState(intialState);
+  let token = localStorage.getItem("token");
+  const url = `http://localhost:8070/user/` + id;
+
+  const handledob = (e) => {
+    let newItem = { ...item };
+
+    newItem.dob = e.target.value;
+    setItem(newItem);
+  };
+
+  const handlemobile = (e) => {
+    let newItem = { ...item };
+
+    newItem.mobile = e.target.value;
+    console.log(newItem);
+    setItem(newItem);
+  };
+  const handlepassword = (e) => {
+    let newItem = { ...item };
+
+    newItem.password = e.target.value;
+    console.log(newItem);
+    setItem(newItem);
+  };
+
+  const handleSubmit = async (e) => {
+    let itemdata = {
+      dob: item.dob,
+      mobile: item.mobile,
+      password: item.password,
+    };
+    e.preventDefault();
+    try {
+      const { data } = await axios.put(url, itemdata, {
+        headers: { token: token },
+      });
+      alert("user Updated");
+      setMsg(data.message);
+
+      window.location = "/login";
+    } catch (error) {
+      if (
+        error.response &&
+        error.response.status >= 400 &&
+        error.response.status <= 500
+      ) {
+        setError(error.response.data.message);
+        setMsg("");
+      }
+    }
+  };
+
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-light bg-dark">
@@ -88,62 +120,26 @@ const UserProfile = () => {
                             className="fas fa-cubes fa-2x me-3"
                             style={{ color: " #ff6219" }}
                           ></i>
-                          <span className="h1 fw-bold mb-0">Logo</span>
+                          <span className="h1 fw-bold mb-0">
+                            Update Your Profile
+                          </span>
                         </div>
 
                         <h5 className="fw-normal mb-3 pb-3">User Profile</h5>
 
                         <div className="form-outline mb-2">
                           <div class="container">
-                            <div class="row">
-                              <div class="col-sm">
-                                {" "}
-                                <input
-                                  // type="text"
-                                  // placeholder="First Name"
-                                  // name="firstName"
-                                  // onChange={handleChange}
-                                  // value={data.firstName}
-                                  // required
-                                  id="form2Example17"
-                                  className="form-control form-control-lg"
-                                />
-                                <label
-                                  className="form-label"
-                                  for="form2Example17"
-                                >
-                                  First Name
-                                </label>
-                              </div>
-                              <div class="col-sm">
-                                <input
-                                  // type="text"
-                                  // placeholder="Last Name"
-                                  // name="lastName"
-                                  // onChange={handleChange}
-                                  // value={data.lastName}
-                                  // required
-                                  id="form2Example17"
-                                  className="form-control form-control-lg"
-                                />
-                                <label
-                                  className="form-label"
-                                  for="form2Example17"
-                                >
-                                  Last Name
-                                </label>
-                              </div>
-                            </div>
+                            <div class="row"></div>
                           </div>
                         </div>
 
                         <input
                           type="date"
-                          // placeholder="Last Name"
-                          // name="lastName"
-                          // onChange={handleChange}
-                          // value={data.lastName}
-                          // required
+                          placeholder="Last Name"
+                          name="lastName"
+                          value={item.dob}
+                          onChange={handledob}
+                          required
                           id="form2Example17"
                           className="form-control form-control-lg"
                         />
@@ -153,12 +149,12 @@ const UserProfile = () => {
 
                         <div className="form-outline mb-2">
                           <input
-                            // type="text"
-                            // placeholder="Last Name"
-                            // name="lastName"
-                            // onChange={handleChange}
-                            // value={data.lastName}
-                            // required
+                            type="text"
+                            placeholder="Last Name"
+                            name="lastName"
+                            value={item.mobile}
+                            onChange={handlemobile}
+                            required
                             id="form2Example17"
                             className="form-control form-control-lg"
                           />
@@ -169,26 +165,11 @@ const UserProfile = () => {
 
                         <div className="form-outline mb-2">
                           <input
-                            // type="email"
-                            // placeholder="Email"
-                            // name="email"
-                            // onChange={handleChange}
-                            // value={data.email}
-                            // required
-                            id="form2Example17"
-                            className="form-control form-control-lg"
-                          />
-                          <label className="form-label" for="form2Example17">
-                            Email address
-                          </label>
-                        </div>
-                        <div className="form-outline mb-2">
-                          <input
                             name="password"
                             type="password"
-							placeholder="Password"
-                            onChange={(e) => setPassword(e.target.value)}
-                            value={password}
+                            placeholder="Password"
+                            value={item.password}
+                            onChange={handlepassword}
                             required
                             id="form2Example17"
                             className="form-control form-control-lg"
@@ -225,6 +206,5 @@ const UserProfile = () => {
     </div>
   );
 };
-
 
 export default UserProfile;
