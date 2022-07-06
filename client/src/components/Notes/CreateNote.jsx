@@ -3,6 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 
 export default function AddNote() {
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location = "/login";
+  };
   const [title, settitle] = useState("");
   const [description, setDescription] = useState("");
   const navigate = useNavigate();
@@ -22,8 +26,7 @@ export default function AddNote() {
       .post("http://localhost:8070/note/", newNote)
       .then(() => {
         alert("Note added");
-        navigate("/allNotes")
-      
+        navigate("/allNotes");
       })
       .catch((err) => {
         alert(err);
@@ -54,7 +57,7 @@ export default function AddNote() {
               fontWeight: "bold",
               fontSize: "2rem",
             }}
-            href="#"
+            href="/createNote"
           >
             NoteScope
           </a>
@@ -66,7 +69,7 @@ export default function AddNote() {
                   color: "white",
                   fontWeight: "bold",
                 }}
-                href="#"
+                href="/allNotes"
               >
                 Add Notes
               </a>
@@ -81,6 +84,27 @@ export default function AddNote() {
                 href="#"
               >
                 My Notes
+              </a>
+            </li>
+            <form class="form-inline my-2 my-md-0">
+              <input
+                class="form-control"
+                type="text"
+                placeholder="Search"
+                aria-label="Search"
+              />
+            </form>
+            <li className="nav-item">
+              <a
+                className="btn pull-right"
+                style={{
+                  color: "white",
+                  fontWeight: "bold",
+                  float: "right",
+                }}
+                onClick={handleLogout}
+              >
+                Sign Out
               </a>
             </li>
           </ul>
@@ -101,7 +125,7 @@ export default function AddNote() {
                   <h5 class="card-title">Add Your Note</h5>
                   <p class="card-text">
                     <form
-                      style={{ padding: "100px", alignItems: "center" }}
+                      style={{ padding: "120px", alignItems: "center" }}
                       onSubmit={sentData}
                       className="needs-validation"
                       novalidate
@@ -151,15 +175,14 @@ export default function AddNote() {
                         </div>
                       </div>
                       <hr className="my-4" style={{ color: "transparent" }} />
-                    
+
                       <button
-                      style={{ background: "#9A616D", float: "left" }}
-                      className="btn btn-primary"
-                      type="submit"
-                    >
-                      Add Note
-                    </button>
-                      
+                        style={{ background: "#9A616D", float: "left" }}
+                        className="btn btn-primary"
+                        type="submit"
+                      >
+                        Add Note
+                      </button>
                     </form>
                   </p>
                 </div>
