@@ -15,12 +15,17 @@ let EditNote = (props) => {
   };
   const [gotData, setTrue] = useState(false);
   const [item, setItem] = useState(intialState);
+  let token = localStorage.getItem("token");
   useEffect(() => {
     const retriveData = async () => {
       try {
-        let result = await axios.get("http://localhost:8070/note/" + id);
+        let result = await axios.get("http://localhost:8070/note/" + id, {
+          headers: {
+            token: token,
+          },
+        });
         setItem(result.data);
-        console.log(result)
+        console.log(result);
         {
           setTrue(true);
         }
@@ -29,7 +34,7 @@ let EditNote = (props) => {
       }
     };
     retriveData();
-  },[id]);
+  }, [id]);
 
   const handletitle = (e) => {
     let newItem = { ...item };
@@ -42,7 +47,7 @@ let EditNote = (props) => {
     let newItem = { ...item };
 
     newItem.description = e.target.value;
-    console.log(newItem)
+    console.log(newItem);
     setItem(newItem);
   };
 
@@ -53,10 +58,17 @@ let EditNote = (props) => {
     };
 
     axios
-      .put("http://localhost:8070/note/updateNote/" + id, data)
+      .put(
+        "http://localhost:8070/note/updateNote/" + id,
+        data,
+        {
+          headers: {
+            token: token,
+          },
+        }
+      )
       .then(function () {
         alert("Note edited");
-        
       })
       .catch(function (error) {
         console.log(error);
@@ -112,19 +124,12 @@ let EditNote = (props) => {
                   color: "white",
                   fontWeight: "bold",
                 }}
-                 href="/allNotes"
+                href="/allNotes"
               >
                 My Notes
               </a>
             </li>
-            <form class="form-inline my-2 my-md-0">
-              <input
-                class="form-control"
-                type="text"
-                placeholder="Search"
-                aria-label="Search"
-              />
-            </form>
+
             <li className="nav-item">
               <a
                 className="btn pull-right"
@@ -229,7 +234,11 @@ let EditNote = (props) => {
       </div>
     </div>
   ) : (
-    <div>Data is loading</div>
+    <div class="d-flex justify-content-center">
+      <div class="spinner-border" role="status">
+        <span class="sr-only"></span>
+      </div>
+    </div>
   );
 };
 

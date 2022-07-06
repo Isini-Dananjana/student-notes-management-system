@@ -8,7 +8,6 @@ const Signup = () => {
     firstName: "",
     lastName: "",
     email: "",
-  
   });
   const [error, setError] = useState("");
   const [msg, setMsg] = useState("");
@@ -113,7 +112,6 @@ const Signup = () => {
                           </label>
                         </div>
 
-                       
                         <div className="pt-1 mb-4">
                           {error && (
                             <div className={styles.error_msg}>{error}</div>

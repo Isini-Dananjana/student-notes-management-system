@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import ReactSearchBox from "react-search-box";
 import axios from "axios";
 
 const ListNotes = () => {
@@ -8,10 +9,14 @@ const ListNotes = () => {
     window.location = "/login";
   };
   const [allItems, setItem] = useState();
+  let token = localStorage.getItem("token");
   useEffect(() => {
     const retrieveUsers = async () => {
       try {
-        let result = await axios.get("http://localhost:8070/user/type/student");
+        let result = await axios.get("http://localhost:8070/user/type/student",{
+            headers:{
+                'token':token
+            } });
         setItem(result.data);
         console.log(result.data);
       } catch (err) {
@@ -58,12 +63,10 @@ const ListNotes = () => {
                 }}
                 href="#"
               >
-               Student List
+                Student List
               </a>
             </li>
-       
 
-            
             <li className="nav-item">
               <a
                 className="btn pull-right"
@@ -113,57 +116,50 @@ const ListNotes = () => {
                   </div>
                 </section>
                 <div>
-                <table   style={{
-                         
-                            background: "white",
-                            padding:"5"
-                          }}id="dtBasicExample" class="table table-striped table-bordered table-lg" cellspacing="0" width="100%">
-                        <thead>
-                          <tr>
-                            <th class="th-sm">User ID
-                      
-                            </th>
-                            <th class="th-sm">First Name
-                      
-                            </th>
-                            <th class="th-sm">Last Name
-                            </th>
-                            <th class="th-sm">Bate of Birth</th>
-                      
-                            <th class="th-sm">Mobile</th>
-                            <th class="th-sm">Account Verification</th>
-                           
-                          </tr>
-                        </thead>
-                       
-                         
-                {allItems ? (
-                  allItems.map((item) => {
-                    return (
-                        
-                        <tbody>
-                          <tr>
-                          <td>{item._id}</td>
-                            <td>{item.firstName}</td>
-                            <td>{item.lastName}</td>
-                            <td>{item.dob}</td>
-                            <td>{item.mobile}</td>
-                            <td>{item.status}</td>
-                           
-                          </tr>
-  
-                        </tbody>
-                      
-                    
-                    );
-                  })
-                ) : (
-                  <div  class="text-center"><div  class="spinner-border m-5" role="status">
-                  
-                </div></div>
-                )}
-                  </table>
+                  <table
+                    style={{
+                      background: "white",
+                      padding: "5",
+                    }}
+                    id="dtBasicExample"
+                    class="table table-striped table-bordered table-lg"
+                    cellspacing="0"
+                    width="100%"
+                  >
+                    <thead>
+                      <tr>
+                        <th class="th-sm">User ID</th>
+                        <th class="th-sm">First Name</th>
+                        <th class="th-sm">Last Name</th>
+                        <th class="th-sm">Bate of Birth</th>
+
+                        <th class="th-sm">Mobile</th>
+                        <th class="th-sm">Account Verification</th>
+                      </tr>
+                    </thead>
+
+                    {allItems ? (
+                      allItems.map((item) => {
+                        return (
+                          <tbody>
+                            <tr>
+                              <td>{item._id}</td>
+                              <td>{item.firstName}</td>
+                              <td>{item.lastName}</td>
+                              <td>{item.dob}</td>
+                              <td>{item.mobile}</td>
+                              <td>{item.status}</td>
+                            </tr>
+                          </tbody>
+                        );
+                      })
+                    ) : (
+                      <div class="text-center">
+                        <div class="spinner-border m-5" role="status"></div>
                       </div>
+                    )}
+                  </table>
+                </div>
               </main>
             </div>
           </div>

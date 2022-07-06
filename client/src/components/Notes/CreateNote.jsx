@@ -21,9 +21,14 @@ export default function AddNote() {
       description,
     };
 
+    let token = localStorage.getItem("token");
     console.log(newNote);
     axios
-      .post("http://localhost:8070/note/", newNote)
+      .post("http://localhost:8070/note/", {
+        headers:{
+            'token':token
+        } 
+    }, newNote)
       .then(() => {
         alert("Note added");
         navigate("/allNotes");
@@ -86,14 +91,7 @@ export default function AddNote() {
                 My Notes
               </a>
             </li>
-            <form class="form-inline my-2 my-md-0">
-              <input
-                class="form-control"
-                type="text"
-                placeholder="Search"
-                aria-label="Search"
-              />
-            </form>
+
             <li className="nav-item">
               <a
                 className="btn pull-right"

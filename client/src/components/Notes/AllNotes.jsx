@@ -8,10 +8,15 @@ const ListNotes = () => {
     window.location = "/login";
   };
   const [allItems, setItem] = useState();
+  let token = localStorage.getItem("token");
   useEffect(() => {
     const retrieveNotes = async () => {
       try {
-        let result = await axios.get("http://localhost:8070/note/");
+        let result = await axios.get("http://localhost:8070/note/", {
+          headers: {
+            token: token,
+          },
+        });
         setItem(result.data);
         console.log(result.data);
       } catch (err) {
@@ -20,6 +25,21 @@ const ListNotes = () => {
     };
     retrieveNotes();
   }, []);
+  let deleteItem = (id) => {
+    axios
+      .delete("http://localhost:8070/note/deleteNote/" + id, {
+        headers: {
+          token: token,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        alert("deleted successfully");
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   return (
     <div style={{ background: "#9A616D" }}>
@@ -91,7 +111,7 @@ const ListNotes = () => {
         </div>
       </nav>
       <div className="row">
-        <section className="" style={{ background: "#9A616D" }}>
+        <section>
           <div className="container ">
             <div className="row d-flex">
               <main role="main">
@@ -183,7 +203,7 @@ const ListNotes = () => {
                                     Delete
                                   </button>
                                 </div>
-                                <small class="text-muted">9 mins</small>
+                                <small class="text-muted"></small>
                               </div>
                             </div>
                           </div>
@@ -192,7 +212,11 @@ const ListNotes = () => {
                     );
                   })
                 ) : (
-                  <div>Data is loading</div>
+                  <div class="d-flex justify-content-center">
+                    <div class="spinner-border" role="status">
+                      <span class="sr-only"></span>
+                    </div>
+                  </div>
                 )}
               </main>
             </div>
@@ -201,18 +225,6 @@ const ListNotes = () => {
       </div>
     </div>
   );
-};
-
-let deleteItem = (id) => {
-  axios
-    .delete("http://localhost:8070/note/deleteNote/" + id)
-    .then((response) => {
-      console.log(response.data);
-      alert("deleted successfully");
-    })
-    .catch((e) => {
-      console.log(e);
-    });
 };
 
 export default ListNotes;

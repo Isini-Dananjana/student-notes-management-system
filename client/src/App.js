@@ -17,7 +17,7 @@ function App() {
 
 			<Route path="/login" exact element={<Login />} />
       <Route path="/signup" exact element={<Signup />} />
-      <Route path="/profile" exact element={<UserProfile />} />
+      <Route path="/profile/:id" exact element={<UserProfile />} />
       <Route path="/createNote" exact element={<CreateNote />} />
       <Route path="/editNote/:id" exact element={<EditNote />} />
       <Route path="/allNotes" exact element={<AllNotes />} />

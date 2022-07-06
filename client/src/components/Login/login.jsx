@@ -18,33 +18,39 @@ const Login = () => {
       const url = "http://localhost:8070/user/signin";
       axios.post(url, data).then((response) => {
         console.log(response.data);
-        localStorage.setItem("token", response.data.token);
 
-        let userStatus = response.data.data.status;
-        let accountType = response.data.data.accountType;
+        let status = response.data.status;
+        let accountType = response.data.accountType;
+        let token = response.data.accessToken;
+        let id = response.data.id;
+        localStorage.setItem("token", response.data.accessToken);
+        console.log(status);
+        console.log(token);
+        if (token) {
 
-        console.log(userStatus);
-
-        if (userStatus === false) {
-          window.location.href = "/profile";
-          // this.props.history.push('/adminHome');
-        } else {
-          if (accountType === "student") {
-            window.location.href = "/allNotes";
-          }
-          if (accountType === "admin") {
-            window.location.href = "/admin";
+          if (status === false) {
+          
+            window.location.href = "/profile/"+id;
+            // this.props.history.push('/adminHome');
+          } else {
+            if (accountType === "student") {
+              window.location.href = "/allNotes";
+            }
+            if (accountType === "admin") {
+              window.location.href = "/admin";
+            }
           }
         }
       });
     } catch (error) {
-      if (
-        error.response &&
-        error.response.status >= 400 &&
-        error.response.status <= 500
-      ) {
-        setError(error.response.data.message);
-      }
+      // if (
+      //   error.response &&
+      //   error.response.status >= 400 &&
+      //   error.response.status <= 500
+      // ) {
+        
+        setError("Invalid Username Or Password");
+      
     }
   };
   return (
@@ -71,7 +77,7 @@ const Login = () => {
                             className="fas fa-cubes fa-2x me-3"
                             style={{ color: " #ff6219" }}
                           ></i>
-                          <span className="h1 fw-bold mb-0">Logo</span>
+                          <span className="h1 fw-bold mb-0">Login</span>
                         </div>
 
                         <h5 className="fw-normal mb-3 pb-3">
