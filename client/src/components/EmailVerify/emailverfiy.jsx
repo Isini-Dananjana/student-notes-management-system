@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import success from "../images/success.png";
-import styles from "./emailverify.module.css";
+import styles from "./EmailVerify.module.css";
 // import { Fragment } from "react/cjs/react.production.min";
 
 const EmailVerify = () => {

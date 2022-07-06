@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import styles from "./login.module.css";
+import styles from "./Login.module.css";
 
 const Login = () => {
   const [data, setData] = useState({ email: "", password: "" });
@@ -32,7 +32,7 @@ const Login = () => {
     
     }else {
       if (accountType === "student"){
-        window.location.href = '/profile'}
+        window.location.href = '/allNotes'}
         else {
 
         }
