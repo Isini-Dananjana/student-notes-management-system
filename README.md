@@ -2,7 +2,7 @@
 
 ## Project Description
 
-MyFitnessPal is a physical fitness web app which acts as a virtual trainer and nutritionist to ensure that the everyone stays fit. With a wide range of workouts to choose from and a multitude of instructors to work with, the app lets you tackle those tyres of fat in the boundaries of your home. Workouts not enough for you? We have you covered! Users can subscribe to different meal plans to opt for healthier calory intake. Want to be up to date with the fitness world? Checkout our informative blog posts with enlightening content.
+NoteScope is a note-keeping web app that acts as a virtual note platform. If you need to note something, you can use this NoteScope quickly because it is simple. A user can add notes and can modify notes. Admins can manage users and can search for users.
 
 ## Technologies
  * React JS
