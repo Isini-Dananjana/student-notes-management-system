@@ -1,4 +1,4 @@
-# Student notes mangement system
+# Student Notes Mangement System
 
 ## Project Description
 
