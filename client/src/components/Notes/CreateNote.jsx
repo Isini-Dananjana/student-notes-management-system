@@ -10,9 +10,7 @@ export default function AddNote() {
   const [title, settitle] = useState("");
   const [description, setDescription] = useState("");
   const navigate = useNavigate();
-  function settingAvailability(event) {
-    console.log(event.target.value);
-  }
+
   function sentData(e) {
     e.preventDefault();
 
@@ -24,11 +22,16 @@ export default function AddNote() {
     let token = localStorage.getItem("token");
     console.log(newNote);
     axios
-      .post("http://localhost:8070/note/", {
-        headers:{
-            'token':token
-        } 
-    }, newNote)
+      .post(
+        "http://localhost:8070/note/",
+
+        newNote,
+        {
+          headers: {
+            token: token,
+          },
+        }
+      )
       .then(() => {
         alert("Note added");
         navigate("/allNotes");

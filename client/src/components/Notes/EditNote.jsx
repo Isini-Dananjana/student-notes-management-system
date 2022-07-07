@@ -58,17 +58,14 @@ let EditNote = (props) => {
     };
 
     axios
-      .put(
-        "http://localhost:8070/note/updateNote/" + id,
-        data,
-        {
-          headers: {
-            token: token,
-          },
-        }
-      )
+      .put("http://localhost:8070/note/updateNote/" + id, data, {
+        headers: {
+          token: token,
+        },
+      })
       .then(function () {
         alert("Note edited");
+        navigate("/allNotes");
       })
       .catch(function (error) {
         console.log(error);
