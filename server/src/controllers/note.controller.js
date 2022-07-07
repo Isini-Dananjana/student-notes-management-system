@@ -47,9 +47,11 @@ const updateNote = async (req, res) => {
     title,
     description,
   };
-
+  console.log(noteId);
+  console.log(updateNote)
   const update = Note.findByIdAndUpdate(noteId, updateNote)
     .then(() => {
+     
       res.status(200).send({ status: "note updated" });
     })
     .catch((err) => {
