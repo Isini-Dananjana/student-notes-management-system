@@ -23,6 +23,7 @@ Before cloning the repo make sure you have installed,
 * Then, enter the project folder and run nvm use to check you have the right node version, then run npm install to install all the dependencies.
 
 ### Getting Started
+  * Create .env
 To run the project, run:
   * cd [folder path]/student-notes-management-system/server and run npm start to start the backend 
   * cd [folder path]/student-notes-management-system/client and run npm start to start the frontend
