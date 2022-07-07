@@ -27,18 +27,18 @@ const Login = () => {
         console.log(status);
         console.log(token);
         if (token) {
-
           if (status === false) {
-          
-            window.location.href = "/profile/"+id;
+            window.location.href = "/profile/" + id;
             // this.props.history.push('/adminHome');
           } else {
             if (accountType === "student") {
               window.location.href = "/allNotes";
             }
-            if (accountType === "admin") {
+            else if (accountType === "admin") {
               window.location.href = "/admin";
             }
+            else
+            setError("Invalid User");
           }
         }
       });
@@ -48,8 +48,7 @@ const Login = () => {
       //   error.response.status >= 400 &&
       //   error.response.status <= 500
       // ) {
-        
-        setError("Invalid Username Or Password");
+if(error){setError("Invalid Username Or Password");}
       
     }
   };

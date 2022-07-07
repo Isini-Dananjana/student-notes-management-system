@@ -20,16 +20,18 @@ const signUp = async (req, res) => {
         .status(409)
         .send({ message: "User with given email already Exist!" });
 
-    // //convert given password to a hash password
-    // const salt = await bcrypt.genSalt(Number(process.env.SALT));
-    // const hashPassword = await bcrypt.hash(req.body.password, salt);
+   
 
     const tempPassword = generator.generate({
       length: 10,
       numbers: true,
     });
 
-    user = await new User({ ...req.body, password: tempPassword }).save();
+     //convert given password to a hash password
+     const salt = await bcrypt.genSalt(Number(process.env.SALT));
+     const hashPassword = await bcrypt.hash(tempPassword, salt);
+
+    user = await new User({ ...req.body, password: hashPassword }).save();
 
     //create token
     const token = await new Token({
@@ -78,6 +80,19 @@ const getUsereByID = async (req, res) => {
     });
 };
 
+const getUserByAccountType= async (req, res) => {
+  let accountType = req.params.accountType;
+  User.find({ accountType: accountType }, function (err, docs) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.status(200).send(docs);
+    }
+  }).catch((err) => {
+    console.log(err);
+  });
+};
+
 //update a user
 
 const updateuser = async (req, res) => {
@@ -88,7 +103,7 @@ const updateuser = async (req, res) => {
     email,
     dob,
     mobile,
-    accountType,
+    accountaccountType,
     password,
     status,
   } = req.body;
@@ -99,7 +114,7 @@ const updateuser = async (req, res) => {
     email,
     dob,
     mobile,
-    accountType,
+    accountaccountType,
     password,
     status: true,
   };
@@ -107,7 +122,7 @@ const updateuser = async (req, res) => {
   const salt = await bcrypt.genSalt(Number(process.env.SALT));
   const hashPassword = await bcrypt.hash(req.body.password, salt);
 
-  updateuser.password = hash;
+  updateuser.password = hashPassword;
   const update = User.findByIdAndUpdate(userId, updateuser)
 
     .then(() => {
@@ -147,4 +162,5 @@ module.exports = {
   getAllUsers,
   getUsereByID,
   updateuser,
-};
+  getUserByAccountType
+}

@@ -1,22 +1,21 @@
 const jwt = require("jsonwebtoken");
 
-function auth(req, res, next) {
-  const accessTokenSecret = "tokensecret";
-  const token = req.header("authorization");
+let verifyToken = function(req,res,next){
 
-  //check for token
+    //checking the token 
+    let token = req.headers["token"];
+    if (!token) {
+      return res.status(403).send({ message: "Unauthorized12!" });
+    }
 
-  if (!token) {
-    res.status(401).json({ msg: "No token, authorization denied" });
-  }
-  try {
-    //verify token
-    const decoded = jwt.verify(token, "jwtSecret");
-    //Add user from payload
-    req.user = decoded;
-    next();
-  } catch (e) {
-    res.status(400).json({ msg: "Token not valid" });
-  }
-}
-module.exports = auth;
+    jwt.verify(token, process.env.JWTPRIVATEKEY, (err, decoded) => {
+      if (err) {
+        return res.status(401).send({ message: "Unauthorized!" });
+      }
+      req.userId = decoded.id;
+      next();
+    });
+
+};
+
+module.exports = verifyToken
