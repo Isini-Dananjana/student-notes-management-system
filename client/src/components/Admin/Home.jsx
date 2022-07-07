@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ReactSearchBox from "react-search-box";
 import axios from "axios";
+import { Modal, Button } from "react-bootstrap";
 
 const ListNotes = () => {
   const handleLogout = () => {
@@ -9,8 +10,30 @@ const ListNotes = () => {
     window.location = "/login";
   };
   const [allItems, setItem] = useState();
+  const [item, setSingleItem] = useState();
   const [searchTerm, setSearchTerm] = useState();
   let token = localStorage.getItem("token");
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const handlePopup = async (id) => {
+    console.log(id);
+
+    try {
+      let result = await axios.get("http://localhost:8070/user/" + id, {
+        headers: {
+          token: token,
+        },
+      });
+      setSingleItem(result.data);
+      console.log(result.data);
+    } catch (err) {
+      console.log(err);
+    }
+    handleShow();
+  };
   useEffect(() => {
     const retrieveUsers = async () => {
       try {
@@ -137,6 +160,7 @@ const ListNotes = () => {
 
                         <th class="th-sm">Mobile</th>
                         <th class="th-sm">Account Verification</th>
+                        <th class="th-sm">Account Type</th>
                       </tr>
                     </thead>
 
@@ -160,8 +184,25 @@ const ListNotes = () => {
                                 <td>{item.lastName}</td>
                                 <td>{item.dob}</td>
                                 <td>{item.mobile}</td>
-                                <td>{item.status}</td>
+                                <td>
+                                  {item.status ? (
+                                    <div>true</div>
+                                  ) : (
+                                    <div>false</div>
+                                  )}
+                                </td>
+
                                 <td>{item.accountType}</td>
+                                <td>
+                                  <button
+                                    button
+                                    type="button"
+                                    class="btn btn-outline-secondary"
+                                    onClick={() => handlePopup(item._id)}
+                                  >
+                                    View User
+                                  </button>
+                                </td>
                               </tr>
                             </tbody>
                           );
@@ -178,6 +219,25 @@ const ListNotes = () => {
           </div>
         </section>
       </div>
+
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Use Info</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {item.firstName} {item.lastName}
+          <div>
+            {" "}
+            {item.status ? <div> Verified :true</div> : <div> Verified :false</div>}
+          </div>
+          <div>Account Type :{item.accountType}</div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
