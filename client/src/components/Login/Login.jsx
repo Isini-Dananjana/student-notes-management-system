@@ -42,7 +42,7 @@ const Login = () => {
           }
         }
       }).catch((err) => {
-        setError("Invalid User name or Pawwsord!");
+        setError("Invalid User name or Password!");
         
       });
     
