@@ -99,17 +99,9 @@ const ListNotes = () => {
 
                     <p>
                       {" "}
-                      <Link
-                        to={"/createNote"}
-                        style={{
-                          textDecoration: "none",
-                          color: "#787b80",
-                        }}
-                      >
-                        <a href="#" class="btn btn-dark my-2">
-                          Add Member
-                        </a>
-                      </Link>
+                      <a href="#" class="btn btn-dark my-2">
+                        Add Member
+                      </a>
                       <a href="#" class="btn btn-secondary my-2">
                         View Members
                       </a>

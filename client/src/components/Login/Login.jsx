@@ -14,7 +14,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
+    
       const url = "http://localhost:8070/user/signin";
       axios.post(url, data).then((response) => {
         console.log(response.data);
@@ -41,17 +41,11 @@ const Login = () => {
             }
           }
         }
-      });
-    } catch (error) {
-      // if (
-      //   error.response &&
-      //   error.response.status >= 400 &&
-      //   error.response.status <= 500
-      // ) {
+      }).catch((err) => {
+        setError("Invalid User name or Pawwsord!");
         
-        setError("Invalid Username Or Password");
-      
-    }
+      });
+    
   };
   return (
     <div>

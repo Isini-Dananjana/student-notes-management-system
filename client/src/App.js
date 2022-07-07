@@ -6,8 +6,7 @@ import EmailVerify from "./components/EmailVerify/Emailverfiy";
 import CreateNote from "./components/Notes/CreateNote";
 import EditNote from "./components/Notes/EditNote";
 import AllNotes from "./components/Notes/AllNotes";
-import AdminHome from "./components/Admin/home";
-// import SingleItem from "./components/Admin/SingleItem";
+import AdminHome from "./components/Admin/Home";
 import { Route, Routes, Navigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
@@ -21,7 +20,6 @@ function App() {
       <Route path="/editNote/:id" exact element={<EditNote />} />
       <Route path="/allNotes" exact element={<AllNotes />} />
       <Route path="/admin" exact element={<AdminHome />} />
-      {/* <Route path="/singleItem/:id" exact element={<SingleItem />} /> */}
       <Route path="/login/user/:id/verify/:token" element={<EmailVerify />} />
     </Routes>
   );

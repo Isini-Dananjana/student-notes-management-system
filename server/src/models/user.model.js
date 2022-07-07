@@ -18,7 +18,7 @@ const userSchema = new Schema({
     required: true,
     unique: true,
   },
- dob: {
+  dob: {
     type: String,
     required: false,
   },
@@ -28,17 +28,14 @@ const userSchema = new Schema({
   },
   accountType: {
     type: String,
-    default:"student"
-  
+    default: "student",
   },
   password: {
     type: String,
-    
   },
   status: {
-    type:Boolean,
-    default:false
-    
+    type: Boolean,
+    default: false,
   },
 });
 
@@ -54,14 +51,19 @@ const validate = (data) => {
     firstName: Joi.string().required().label("First Name"),
     lastName: Joi.string().required().label("Last Name"),
     email: Joi.string().email().required().label("Email"),
-    
-    
+  });
+  return schema.validate(data);
+};
 
-    // password: passwordComplexity().label("Password"),
+const validatePassword = (data) => {
+  const schema = Joi.object({
+    dob: Joi.string().required().label("date of Birth"),
+    mobile: Joi.number().required().label("Phone number"),
+    password: passwordComplexity().label("Password"),
   });
   return schema.validate(data);
 };
 
 const User = mongoose.model("User", userSchema);
 
-module.exports = { User, validate };
+module.exports = { User, validate, validatePassword };

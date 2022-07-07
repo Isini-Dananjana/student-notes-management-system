@@ -6,7 +6,7 @@ const addNewNote = async (req, res) => {
       let result = await Note.create(req.body);
       res.status(200).json({ result });
     } catch (error) {
-        res.status(400).json({ error: err.message });
+      res.status(400).json({ error: err.message });
     }
   }
 };
@@ -37,21 +37,16 @@ const getNoteByID = async (req, res) => {
 
 const updateNote = async (req, res) => {
   let noteId = req.params.id;
-  const {
-    title,
-    description,
-    
-  } = req.body;
+  const { title, description } = req.body;
 
   const updateNote = {
     title,
     description,
   };
   console.log(noteId);
-  console.log(updateNote)
+  console.log(updateNote);
   const update = Note.findByIdAndUpdate(noteId, updateNote)
     .then(() => {
-     
       res.status(200).send({ status: "note updated" });
     })
     .catch((err) => {
@@ -72,14 +67,10 @@ const deleteNote = async (req, res) => {
     });
 };
 
-
-
-
 module.exports = {
   addNewNote,
   getAllNotes,
   getNoteByID,
   updateNote,
   deleteNote,
-
 };

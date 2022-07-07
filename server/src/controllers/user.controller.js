@@ -1,10 +1,12 @@
 const router = require("express").Router();
-const { User, validate } = require("../models/user.model");
+const { User, validate, validatePassword } = require("../models/user.model");
 const Token = require("../models/token");
 const crypto = require("crypto");
 const sendEmail = require("../utils/sendEmail");
 const bcrypt = require("bcrypt");
 const generator = require("generate-password");
+const passwordComplexity = require("joi-password-complexity");
+const Joi = require("joi");
 
 const signUp = async (req, res) => {
   try {
@@ -20,16 +22,14 @@ const signUp = async (req, res) => {
         .status(409)
         .send({ message: "User with given email already Exist!" });
 
-   
-
     const tempPassword = generator.generate({
       length: 10,
       numbers: true,
     });
 
-     //convert given password to a hash password
-     const salt = await bcrypt.genSalt(Number(process.env.SALT));
-     const hashPassword = await bcrypt.hash(tempPassword, salt);
+    //convert given password to a hash password
+    const salt = await bcrypt.genSalt(Number(process.env.SALT));
+    const hashPassword = await bcrypt.hash(tempPassword, salt);
 
     user = await new User({ ...req.body, password: hashPassword }).save();
 
@@ -40,7 +40,6 @@ const signUp = async (req, res) => {
     }).save();
 
     //create url
-    // const url = `${process.env.BASE_URL}/user/${user.id}/verify/${token.token}`;
 
     const url = `Your email is verified!!\n\n Login link : ${process.env.BASE_URL}\n Your tempary password :${tempPassword}`;
 
@@ -80,7 +79,7 @@ const getUsereByID = async (req, res) => {
     });
 };
 
-const getUserByAccountType= async (req, res) => {
+const getUserByAccountType = async (req, res) => {
   let accountType = req.params.accountType;
   User.find({ accountType: accountType }, function (err, docs) {
     if (err) {
@@ -119,6 +118,9 @@ const updateuser = async (req, res) => {
     status: true,
   };
 
+  const { error } = validatePassword(req.body);
+  if (error) return res.status(400).send({ message: error.details[0].message });
+
   const salt = await bcrypt.genSalt(Number(process.env.SALT));
   const hashPassword = await bcrypt.hash(req.body.password, salt);
 
@@ -134,33 +136,10 @@ const updateuser = async (req, res) => {
     });
 };
 
-//verify the token whith sent ro the usr and update to be verified in the db
-
-const verify = async (req, res) => {
-  try {
-    const user = await User.findOne({ _id: req.params.id });
-    if (!user) return res.status(400).send({ message: "Invalid link" });
-
-    const token = await Token.findOne({
-      userId: user._id,
-      token: req.params.token,
-    });
-    if (!token) return res.status(400).send({ message: "Invalid link" });
-
-    await User.updateOne({ _id: user._id, status: true });
-    await token.remove();
-
-    res.status(200).send({ message: "Email verified successfully" });
-  } catch (error) {
-    res.status(500).send({ message: "Internal Server Error" });
-  }
-};
-
 module.exports = {
   signUp,
-  verify,
   getAllUsers,
   getUsereByID,
   updateuser,
-  getUserByAccountType
-}
+  getUserByAccountType,
+};
