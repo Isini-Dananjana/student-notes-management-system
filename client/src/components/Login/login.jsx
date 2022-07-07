@@ -33,12 +33,9 @@ const Login = () => {
           } else {
             if (accountType === "student") {
               window.location.href = "/allNotes";
-            }
-            else if (accountType === "admin") {
+            } else if (accountType === "admin") {
               window.location.href = "/admin";
-            }
-            else
-            setError("Invalid User");
+            } else setError("Invalid User");
           }
         }
       });
@@ -48,8 +45,9 @@ const Login = () => {
       //   error.response.status >= 400 &&
       //   error.response.status <= 500
       // ) {
-if(error){setError("Invalid Username Or Password");}
-      
+      if (error) {
+        setError("Invalid Username Or Password");
+      }
     }
   };
   return (
