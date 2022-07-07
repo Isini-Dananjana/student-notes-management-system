@@ -1,4 +1,4 @@
-# Student Notes Mangement System
+# NoteScope
 
 ## Project Description
 
