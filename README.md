@@ -33,7 +33,7 @@ To run the project,:
 ### Project link : http://localhost:3000/login
 
 ### Login Credentials
-  Admin : User name = admin@gmail.com  /  password = Admin@12
-  Student : User name = isinidan@gmail.com /  password = Note@123
+  * Admin : User name = admin@gmail.com  /  password = Admin@12
+  * Student : User name = isinidan@gmail.com /  password = Note@123
   
 
