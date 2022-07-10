@@ -225,12 +225,19 @@ const ListNotes = () => {
           <Modal.Title>Use Info</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {item.firstName} {item.lastName}
-          <div>
-            {" "}
-            {item.status ? <div> Verified :true</div> : <div> Verified :false</div>}
-          </div>
-          <div>Account Type :{item.accountType}</div>
+          {item ? (
+            <div>
+              {item.firstName} {item.lastName}
+              {item.status ? (
+                <div> Verified :true</div>
+              ) : (
+                <div> Verified :false</div>
+              )}
+              <div>Account Type :{item.accountType}</div>
+            </div>
+          ) : (
+            <div> no data</div>
+          )}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
