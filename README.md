@@ -20,10 +20,20 @@ Before cloning the repo make sure you have installed,
 ### Install
 
 * Clone the repo in your folder: git clone https://github.com/Isini-Dananjana/student-notes-management-system
-* Then, enter the project folder and run nvm use to check you have the right node version, then run npm install to install all the dependencies.
+* cd [folder path]/student-notes-management-system/server and run run npm install to install all the dependencies in backend.
+* cd [folder path]/student-notes-management-system/client and run run npm install to install all the dependencies in frontend.
+* Create .env file (in [folder path]/student-notes-management-system/server)
 
 ### Getting Started
-  * Create .env
-To run the project, run:
+
+To run the project,:
   * cd [folder path]/student-notes-management-system/server and run npm start to start the backend 
   * cd [folder path]/student-notes-management-system/client and run npm start to start the frontend
+  
+### Project link : http://localhost:3000/login
+
+### Login Credentials
+  Admin : User name = admin@gmail.com  /  password = Admin@12
+  Student : User name = isinidan@gmail.com /  password = Note@123
+  
+
